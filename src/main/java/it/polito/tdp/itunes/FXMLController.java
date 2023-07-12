@@ -37,7 +37,7 @@ public class FXMLController {
     private ComboBox<?> cmbCanzone; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbGenere"
-    private ComboBox<?> cmbGenere; // Value injected by FXMLLoader
+    private ComboBox<String> cmbGenere; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtMemoria"
     private TextField txtMemoria; // Value injected by FXMLLoader
@@ -52,7 +52,25 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	
+    	txtResult.clear();
+    	
+    	String genere = cmbGenere.getSelectionModel().getSelectedItem();
+    	 if (genere == null) {
+    	 txtResult.appendText("Perfavore seleziona un genere!\n");
+    	 return;
+    	 }
+    	 
+    	 this.model.creaGrafo(genere);
+    	 
+    	 txtResult.appendText("GRAFO CREATO!\n");
+    	 txtResult.appendText("#VERTICI: " + this.model.numeroVertici() + "\n");
+    	 txtResult.appendText("#ARCHI: " + this.model.numeroArchi() + "\n");
+    	 
+    	 txtResult.appendText("\nCOPPIA CANZONI DELTA MASSIMO:\n");
+    	 txtResult.appendText(this.model.deltaMassimo());
+    	 
+  
     }
 
     @FXML
@@ -75,6 +93,8 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	cmbGenere.getItems().addAll(this.model.listaGeneri());
+
     }
 
 }
